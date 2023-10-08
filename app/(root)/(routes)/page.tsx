@@ -13,16 +13,7 @@ const SetupPage = () => {
             onOpen()
         }
     }, [isOpen, onOpen])
-    return (
-        <div className='p-4'>
-            <Modal
-                title='Teste'
-                description='descricao'
-                isOpen
-                onClose={() => {}}
-            ></Modal>
-        </div>
-    )
+    return null
 }
 
 export default SetupPage
