@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         const { name } = body
 
         if (!userId) {
-            return new NextResponse('Não autorizado', { status: 401 })
+            return new NextResponse('Requer autenticação', { status: 401 })
         }
 
         if (!name) {

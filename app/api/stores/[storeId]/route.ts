@@ -29,7 +29,7 @@ export async function PATCH(
 
         return NextResponse.json(store)
     } catch (error) {
-        console.log('[STORES_PATCH]', error)
+        console.log('[STORE_PATCH]', error)
         return new NextResponse('Erro interno', { status: 500 })
     }
 }
@@ -41,7 +41,8 @@ export async function DELETE(
     try {
         const { userId } = auth()
 
-        if (!userId) return new NextResponse('Não autorizado', { status: 401 })
+        if (!userId)
+            return new NextResponse('Requer autenticação', { status: 401 })
 
         if (!params.storeId)
             return new NextResponse('É necessário uma loja', { status: 400 })
@@ -55,7 +56,7 @@ export async function DELETE(
 
         return NextResponse.json(store)
     } catch (error) {
-        console.log('[STORES_DELETE]', error)
+        console.log('[STORE_DELETE]', error)
         return new NextResponse('Erro interno', { status: 500 })
     }
 }
