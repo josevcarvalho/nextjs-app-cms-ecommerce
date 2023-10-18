@@ -29,6 +29,26 @@ export function MainNav({
             active: pathname === `/${params.storeId}/categories`,
         },
         {
+            href: `/${params.storeId}/sizes`,
+            label: 'Tamanhos',
+            active: pathname === `/${params.storeId}/sizes`,
+        },
+        {
+            href: `/${params.storeId}/colors`,
+            label: 'Cores',
+            active: pathname === `/${params.storeId}/colors`,
+        },
+        {
+            href: `/${params.storeId}/products`,
+            label: 'Produtos',
+            active: pathname === `/${params.storeId}/products`,
+        },
+        {
+            href: `/${params.storeId}/orders`,
+            label: 'Pedidos',
+            active: pathname === `/${params.storeId}/orders`,
+        },
+        {
             href: `/${params.storeId}/settings`,
             label: 'Ajustes',
             active: pathname === `/${params.storeId}/settings`,

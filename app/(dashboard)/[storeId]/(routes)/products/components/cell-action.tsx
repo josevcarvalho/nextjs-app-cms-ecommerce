@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 
-import { CategoryColumn } from '@/app/(dashboard)/[storeId]/(routes)/categories/components/columns'
+import { ProductColumn } from '@/app/(dashboard)/[storeId]/(routes)/products/components/columns'
 import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
@@ -18,7 +18,7 @@ import {
 import { AlertModal } from '@/components/modals/alert-modal'
 
 interface CellActionProps {
-    data: CategoryColumn
+    data: ProductColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -30,20 +30,18 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id)
-        toast.success('ID da categoria copiada para a área de transferência.')
+        toast.success('ID do produto copiado para a área de transferência.')
     }
 
     const onDelete = async () => {
         try {
             setLoading(true)
-            await axios.delete(`/api/${params.storeId}/categories/${data.id}`)
+            await axios.delete(`/api/${params.storeId}/products/${data.id}`)
             router.refresh()
-            router.push(`/${params.storeId}/categories`)
-            toast.success('Categoria deletada')
+            router.push(`/${params.storeId}/products`)
+            toast.success('Produto deletado')
         } catch (error) {
-            toast.error(
-                'Certifique-se de remover todos os produtos usando essa categoria primeiro. '
-            )
+            toast.error('Deu alguma coisa errada')
         } finally {
             setLoading(false)
             setOpen(false)
@@ -74,7 +72,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
                     <DropdownMenuItem
                         onClick={() =>
                             router.push(
-                                `/${params.storeId}/categories/${data.id}`
+                                `/${params.storeId}/products/${data.id}`
                             )
                         }
                     >

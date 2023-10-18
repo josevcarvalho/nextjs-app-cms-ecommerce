@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation'
-import { Billboard, Category } from '@prisma/client'
+import { Color } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Heading } from '@/components/ui/heading'
@@ -23,64 +23,51 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { AlertModal } from '@/components/modals/alert-modal'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select'
 
-interface CategoryFormProps {
-    initialData: Category | null
-    billboards: Billboard[]
+interface ColorFormProps {
+    initialData: Color | null
 }
 
 const formSchema = z.object({
     name: z.string().min(1),
-    billboardId: z.string().min(1),
+    value: z.string().min(4).regex(/^#/, {
+        message: 'Deve ser um código hexadecimal válido',
+    }),
 })
 
-type CategoryFormValues = z.infer<typeof formSchema>
+type ColorFormValues = z.infer<typeof formSchema>
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({
-    initialData,
-    billboards,
-}) => {
+export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
     const params = useParams()
     const router = useRouter()
 
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const title = initialData ? 'Editar categoria' : 'Criar categoria'
-    const description = initialData
-        ? 'Editar uma categoria'
-        : 'Criar uma nova categoria'
-    const toastMessage = initialData
-        ? 'Categoria atualizada'
-        : 'Categoria criada'
+    const title = initialData ? 'Editar cor' : 'Criar cor'
+    const description = initialData ? 'Editar uma cor' : 'Criar uma nova cor'
+    const toastMessage = initialData ? 'Cor atualizada' : 'Cor criada'
     const action = initialData ? 'Salvar alterações' : 'Criar'
 
-    const form = useForm<CategoryFormValues>({
+    const form = useForm<ColorFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData || {
             name: '',
-            billboardId: '',
+            value: '',
         },
     })
 
-    const onSubmit = async (data: CategoryFormValues) => {
+    const onSubmit = async (data: ColorFormValues) => {
         try {
             setLoading(true)
             if (initialData)
                 await axios.patch(
-                    `/api/${params.storeId}/categories/${params.categoryId}`,
+                    `/api/${params.storeId}/colors/${params.colorId}`,
                     data
                 )
-            else await axios.post(`/api/${params.storeId}/categories`, data)
+            else await axios.post(`/api/${params.storeId}/colors`, data)
             router.refresh()
-            router.push(`/${params.storeId}/categories`)
+            router.push(`/${params.storeId}/colors`)
             toast.success(toastMessage)
         } catch (error) {
             toast.error('Deu alguma coisa errada')
@@ -93,14 +80,14 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         try {
             setLoading(true)
             await axios.delete(
-                `/api/${params.storeId}/categories/${params.categoryId}`
+                `/api/${params.storeId}/colors/${params.colorId}`
             )
             router.refresh()
-            router.push(`/${params.storeId}/categories`)
-            toast.success('Categoria deletada')
+            router.push(`/${params.storeId}/colors`)
+            toast.success('Cor deletada')
         } catch (error) {
             toast.error(
-                'Certifique-se de remover todos os produtos desta categoria primeiro. '
+                'Certifique-se de remover todos os produtos usando essa Cor primeiro. '
             )
         } finally {
             setLoading(false)
@@ -145,7 +132,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                                     <FormControl>
                                         <Input
                                             disabled={loading}
-                                            placeholder='Nome da categoria'
+                                            placeholder='Nome da cor'
                                             {...field}
                                         ></Input>
                                     </FormControl>
@@ -155,35 +142,26 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                         />
                         <FormField
                             control={form.control}
-                            name='billboardId'
+                            name='value'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Painel</FormLabel>
-                                    <Select
-                                        disabled={loading}
-                                        onValueChange={field.onChange}
-                                        value={field.value}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue
-                                                    defaultValue={field.value}
-                                                    placeholder='Selecione um painel'
-                                                />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {billboards.map(billboard => (
-                                                <SelectItem
-                                                    key={billboard.id}
-                                                    value={billboard.id}
-                                                >
-                                                    {billboard.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <FormLabel>Valor</FormLabel>
+                                    <FormControl>
+                                        <div className='flex items-center gap-x-4'>
+                                            <Input
+                                                disabled={loading}
+                                                placeholder='Valor da cor'
+                                                {...field}
+                                            />
+                                            <div
+                                                className='border p-4 rounded-full'
+                                                style={{
+                                                    backgroundColor:
+                                                        field.value,
+                                                }}
+                                            />
+                                        </div>
+                                    </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}

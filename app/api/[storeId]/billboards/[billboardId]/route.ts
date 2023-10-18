@@ -18,7 +18,7 @@ export async function GET(
 
         return NextResponse.json(billboard)
     } catch (error) {
-        console.log('[GET_DELETE]', error)
+        console.log('[BILLBOARD_GET]', error)
         return new NextResponse('Erro interno', { status: 500 })
     }
 }

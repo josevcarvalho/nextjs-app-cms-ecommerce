@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 
-import { CategoryColumn } from '@/app/(dashboard)/[storeId]/(routes)/categories/components/columns'
+import { SizeColumn } from '@/app/(dashboard)/[storeId]/(routes)/sizes/components/columns'
 import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
@@ -18,7 +18,7 @@ import {
 import { AlertModal } from '@/components/modals/alert-modal'
 
 interface CellActionProps {
-    data: CategoryColumn
+    data: SizeColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -30,19 +30,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id)
-        toast.success('ID da categoria copiada para a área de transferência.')
+        toast.success('ID do tamanho copiado para a área de transferência.')
     }
 
     const onDelete = async () => {
         try {
             setLoading(true)
-            await axios.delete(`/api/${params.storeId}/categories/${data.id}`)
+            await axios.delete(`/api/${params.storeId}/sizes/${data.id}`)
             router.refresh()
-            router.push(`/${params.storeId}/categories`)
-            toast.success('Categoria deletada')
+            router.push(`/${params.storeId}/sizes`)
+            toast.success('Tamanho deletado')
         } catch (error) {
             toast.error(
-                'Certifique-se de remover todos os produtos usando essa categoria primeiro. '
+                'Certifique-se de remover todos os produtos usando esse tamanho primeiro. '
             )
         } finally {
             setLoading(false)
@@ -73,9 +73,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() =>
-                            router.push(
-                                `/${params.storeId}/categories/${data.id}`
-                            )
+                            router.push(`/${params.storeId}/sizes/${data.id}`)
                         }
                     >
                         <Edit className='mr-2 h-4 w-4' />

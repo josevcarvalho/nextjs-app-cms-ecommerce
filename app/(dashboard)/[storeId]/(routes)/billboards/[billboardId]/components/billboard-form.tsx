@@ -86,7 +86,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                 `/api/${params.storeId}/billboards/${params.billboardId}`
             )
             router.refresh()
-            router.push('/')
+            router.push(`/${params.storeId}/billboards`)
             toast.success('Painel deletado')
         } catch (error) {
             toast.error(
@@ -149,9 +149,12 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                             name='label'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Conteúdo</FormLabel>
+                                    <FormLabel htmlFor='billboardLabel'>
+                                        Conteúdo
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
+                                            id='billboardLabel'
                                             disabled={loading}
                                             placeholder='Conteúdo do painel'
                                             {...field}
