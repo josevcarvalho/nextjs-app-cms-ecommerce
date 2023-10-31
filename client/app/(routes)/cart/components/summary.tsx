@@ -21,7 +21,7 @@ const Summary = () => {
     }
 
     if (searchParams.get('canceled')) toast.error('Deu alguma coisa errada')
-  }, [searchParams])
+  }, [searchParams, removeAll])
 
   const totalPrice = items.reduce((total, item) => {
     return total + Number(item.price)
@@ -56,7 +56,11 @@ const Summary = () => {
           <Currency value={totalPrice} />
         </div>
       </div>
-      <Button onClick={onCheckout} className='w-full mt-6'>
+      <Button
+        disabled={items.length === 0}
+        onClick={onCheckout}
+        className='w-full mt-6'
+      >
         Finalizar
       </Button>
     </div>

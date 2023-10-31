@@ -62,7 +62,7 @@ export async function POST(req: Request) {
         isArchived: true,
       },
     })
-
-    return new NextResponse(null, { status: 200 })
   }
+
+  return new NextResponse(null, { status: 200 })
 }
