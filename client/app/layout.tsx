@@ -23,11 +23,11 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={font.className}>
-        {/* <ModalProvider /> */}
-        {/* <ToastProvider /> */}
-        {/* <Navbar /> */}
+        <ModalProvider />
+        <ToastProvider />
+        <Navbar />
         {children}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   )
