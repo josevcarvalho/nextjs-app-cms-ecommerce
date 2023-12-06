@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import { Billboard as BillboardType } from '@/types'
 
 interface BillboardProps {
